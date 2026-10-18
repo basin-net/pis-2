@@ -11,6 +11,8 @@ keywords: audio recording reel tape wav playback dub
 
 (U) The following recordings were dubbed from reel-to-reel and cassette originals to 11 kHz 8-bit digital audio in 1996–97. Each is filed with the document it belongs to; read the document first. Playback is logged.
 
+(U) **Voices on every dub are masked** under [[directives|J-7 Procedure 96-4]]. The masking processor evens out pitch, formant and cadence; it does not touch words, timing, or any other sound on the tape. Listeners often describe masked voices as flat or not quite present, while the room around them sounds entirely real. This is expected.
+
 ::: audio-list
 
 ## NOT DUBBED

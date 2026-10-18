@@ -6,7 +6,7 @@ doc: PIS-SD-023
 modified: 06 OCT 1997
 kind: page
 summary: Directives, SOPs and forms in force.
-keywords: directive sop form w-3 64-01 72-03 85-04 88-14 91-02 95-06 4-1 counting blind tally morning count sealing retention screening
+keywords: directive sop form w-3 96-4 masking voice 64-01 72-03 85-04 88-14 91-02 95-06 4-1 counting blind tally morning count sealing retention screening
 ---
 
 (TS//WB) The following directives and forms are in force. Where a summary is given, the hard copy governs.
@@ -34,6 +34,10 @@ Public reporting of program matters is not to be suppressed. Rumor, ridicule and
 ## DIRECTIVE 95-06 — PERSONNEL SCREENING
 
 Personnel in PA-001 assignments will undergo psychological screening every 30 days. Personnel are not to compare unexplained grief, habits they cannot account for, or other symptoms with colleagues. Report them to the Site Medical Officer.
+
+## J-7 PROCEDURE 96-4 — SPEAKER MASKING
+
+Before any recording that contains the voice of a private person or of program personnel is dubbed to digital media, every voice on it is passed through the J-7 speaker-masking processor (pitch and formant normalization, cadence regularization). Words, timing and all other sounds on the recording are not altered. Masked voices may sound flat, even, or not quite present. This is expected. Do not attempt to unmask a recording. Personnel who believe they recognize a masked voice are to file a contact report with J-7 and are not to say whose voice they believe it is.
 
 ## SOP 4-1 (REV. F) — CONTAINMENT BREACH RESPONSE
 
