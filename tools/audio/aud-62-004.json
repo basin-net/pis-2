@@ -10,7 +10,7 @@
   "speakers": {
     "INT":    {"voices": ["Evan", "Reed"], "rate": 158, "dist": 0.2, "f0": 115, "vol": 0.85, "pitch_var": 2},
     "PRUITT": {"voices": ["Nathan", "Alex", "Grandpa"], "rate": 118, "dist": 0.45, "f0": 102, "vol": 0.8, "drift": 0.016, "shift": 0.95, "pitch_var": 1},
-    "WIFE":   {"voices": ["Samantha"], "rate": 165, "dist": 0.6, "f0": 205, "vol": 0.75, "pitch_var": 2}
+    "WIFE":   {"voices": ["Samantha"], "rate": 165, "dist": 0.6, "f0": 205, "vol": 0.75, "pitch_var": 2, "gain": 0.55}
   },
   "beds": [
     {"type": "clock", "gain": 0.035, "dist": 0.7},
