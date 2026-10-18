@@ -45,4 +45,4 @@ keywords: index bulletins contents what's new
 
 - 10 OCT 97 — [[J4-INDEX|J-4 legacy files]] scanned under Records Digitization Project 96-2 are now on this server. The files have not been reviewed.
 - 06 OCT 97 — Asset file [[PA-001]] revised (R31). K-value extract updated.
-- 03 OCT 97 — Selected reel-to-reel holdings have been dubbed to 11 kHz digital audio and can be played on this server. See [[audio|Audio Holdings]].
+- 03 OCT 97 — Selected reel-to-reel and cassette holdings have been dubbed to 11 kHz digital audio and can be played on this server. See [[audio|Audio Holdings]].

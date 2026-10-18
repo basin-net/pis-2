@@ -127,7 +127,7 @@
     line('  WITHHELD ......... ' + withheld + '  (ACCESS LEVEL INSUFFICIENT)');
     line('');
     if (/\bellen\b/i.test(q)) {
-      line('NOTE: NO PERSON OF THIS NAME APPEARS IN ANY PROGRAM RECORD.');
+      line('NOTE: NO PERSON OF THIS NAME IS KNOWN TO THIS OFFICE.');
       line('');
     }
     if (!hits.length) { line('NO DOCUMENTS AVAILABLE AT ACCESS LEVEL WICKER-3.'); return; }

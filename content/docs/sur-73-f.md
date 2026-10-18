@@ -23,8 +23,8 @@ The Accordion is stepped through floor area in increments of 1 sq in. At each st
 
 | PASS | DATES | RANGE (SQ FT) | N | DETECTS OCC. | VALUES FOUND |
 |---|---|---|---|---|---|
-| {ctr} A | {m} MAR 64 – FEB 66 | {m} 40 – 450 | {ctr} 4 | {m} 0 – 3 | {ctr} 9 |
-| {ctr} B | {m} APR 66 – NOV 69 | {m} 40 – 700 | {ctr} 12 | {m} 0 – 11 | {ctr} 8 |
+| {ctr} A | {m} MAR 64 – FEB 66 | {m} 40 – 450 | {ctr} 4 | {m} 0 – 3 | {ctr} 4 |
+| {ctr} B | {m} APR 66 – NOV 69 | {m} 40 – 700 | {ctr} 12 | {m} 0 – 11 | {ctr} 13 |
 | {ctr} C | {m} JAN 70 – MAY 73 | {m} 700 – 2,000 | {ctr} 40 | {m} 0 – 39 | {ctr} 0 |
 
 ```doc

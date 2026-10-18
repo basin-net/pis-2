@@ -15,7 +15,7 @@ keywords: sites brickyard accordion site 1 site 3 site 9 held in situ courthouse
 |---|---|---|---|---|---|
 | {m} SITE 1 | — | [[x:7]], N. MEX. | — | — | First PA-001 reproduction (EXP-63-001). Decommissioned 1971. Facility demolished. Records transferred to SITE 3. |
 | {m} SITE 3 | ANVIL | [[x:8]] CO., NEV. | Records; lamina core library | GREEN | Primary research facility. Holds SITE 1 records. |
-| {m} SITE 9 | BRICKYARD | [[x:9]], KANS. | Test cells | GREEN | HEADCOUNT test facility. Cell 1 ("the Accordion"), adjustable-wall room, inactive since 1973. Cell 2 (K-02 replica). Cell 3 (K-03) in use under WA-66-01. |
+| {m} SITE 9 | BRICKYARD | [[x:9]], KANS. | Test cells | GREEN | HEADCOUNT test facility. Cell 1 ("the Accordion"), adjustable-wall room; sweeps ended 1973, used since at fixed settings. Cell 2 (K-02 replica). Cell 3 (K-03) in use under WA-66-01. |
 
 ## HELD IN SITU
 

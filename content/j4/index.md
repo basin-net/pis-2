@@ -14,7 +14,7 @@ keywords: j-4 legacy files unstaffed scan records digitization 96-2 rm 2-110 cab
 | FILE | DATE | TITLE (AS FOUND) | PAGES | SCAN |
 |---|---|---|---|---|
 | {m} [[J4-INV-84-118]] | {m} 02 NOV 84 | Inventory, SITE 1 transfer boxes 55-70 | {ctr} 4 | OK |
-| {m} [[J4-MEMO-85-03]] | {m} 15 MAR 85 | (Untitled) memorandum, J-4 to Director | {ctr} 3 | OK |
+| {m} [[J4-MEMO-85-03]] | {m} 15 MAR 85 | Memorandum, J-4 to Director (unsigned) | {ctr} 3 | OK |
 | {m} [[J4-NOTICE-85-02]] | {m} 15 MAR 85 | Notice of meeting, all J-4 personnel | {ctr} 1 | OK |
 | {m} J4-BUD-85-01 | {m} 10 JAN 85 | FY85 budget execution, J-4 | {ctr} 22 | SCAN FAILED |
 | {m} J4-MISC-01 | {m} 1979-85 | Coffee fund ledger | {ctr} 9 | NOT SCANNED |

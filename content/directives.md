@@ -13,11 +13,11 @@ keywords: directive sop form w-3 96-4 masking voice 64-01 72-03 85-04 88-14 91-0
 
 ## DIRECTIVE 64-01 — COUNTING
 
-All work involving PA-001 is conducted under **Blind Tally**: subjects and personnel are issued numbered tokens on entry and are counted by token, never by name. All program personnel, at all sites, are counted each morning at 0800 local by J-7 (**Morning Count**). Counts are recorded as numbers only. A discrepancy is reported to J-7 even when no one is missing. *Especially* when no one is missing.
+All work involving PA-001 is conducted under **Blind Tally**: subjects and personnel are issued numbered tokens on entry and are counted by token, never by name. All program personnel, at all sites, are counted each morning at 0800 local by J-7 (**Morning Count**). Counts are recorded as numbers only. A discrepancy is reported to J-7 even when no one is missing. Especially when no one is missing.
 
 ## DIRECTIVE 72-03 — RETENTION OF PUBLIC K-ROOMS
 
-A room in public or private use that is found to be at a K-value will not be altered, closed or acquired where its retention serves program interests (observation, Gap Analysis calibration, availability for WICKER-APPLIED). J-6 will monitor. Owners and occupants will not be informed.
+A room in public or private use that is found to be at a K-value will not be altered in floor area, closed or acquired where its retention serves program interests (observation, Gap Analysis calibration, availability for WICKER-APPLIED). J-6 will monitor. Owners and occupants will not be informed.
 
 ## DIRECTIVE 85-04 — RM 2-114
 
