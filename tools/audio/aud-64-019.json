@@ -7,13 +7,13 @@
   "tail": 0.6,
   "room": {"size": 0.7, "wet": 0.15},
   "speakers": {
-    "A": {"voices": ["Evan", "Eddy"],   "rate": 165, "dist": 0.15, "f0": 120, "vol": 0.85},
-    "B": {"voices": ["Tom", "Rocko"],   "rate": 156, "dist": 0.35, "f0": 104, "vol": 0.85},
-    "C": {"voices": ["Nathan", "Reed"], "rate": 150, "dist": 0.55, "f0": 126, "vol": 0.8}
+    "A": {"voices": ["Evan", "Eddy"], "rate": 165, "dist": 0.15, "f0": 120, "vol": 0.85, "pitch_var": 2},
+    "B": {"voices": ["Tom", "Rocko"], "rate": 156, "dist": 0.35, "f0": 104, "vol": 0.85, "pitch_var": 2},
+    "C": {"voices": ["Alex", "Reed"], "rate": 150, "dist": 0.55, "f0": 126, "vol": 0.8, "pitch_var": 2}
   },
   "beds": [
     {"type": "equipment", "gain": 0.08, "dist": 0.5},
-    {"type": "room",      "gain": 0.02, "dist": 0.5}
+    {"type": "room", "gain": 0.02, "dist": 0.5}
   ],
   "timeline": [
     {"sfx": "click", "gain": 0.4, "dist": 0.05},

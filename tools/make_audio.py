@@ -13,6 +13,11 @@ and is written as 11 kHz 8-bit mono WAV.
     python3 tools/make_audio.py tools/audio/aud-62-004.json
     python3 tools/make_audio.py tools/audio/*.json
 
+Recorded sounds in tools/audio/samples/ (listed in samples.json, credited in
+CREDITS.md) are used in place of the synthesized ones wherever they exist:
+each file is split into single events (one cough, one coin, one cup), and a
+different event is picked each time with small changes of pitch and level.
+
 Output goes to static/audio/<out>. Standard library only. `say` and
 `afconvert` are macOS tools; elsewhere use "file" segments only (16-bit mono
 WAV at 22050 Hz). If Premium or Enhanced voices are installed (System
@@ -34,6 +39,8 @@ import wave
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(ROOT, "static", "audio")
+SAMPLE_DIR = os.path.join(ROOT, "tools", "audio", "samples")
+CACHE_DIR = os.path.join(ROOT, "tools", "audio", ".cache")
 SR = 22050
 OUT_SR = 11025
 TAU = 2 * math.pi
@@ -441,7 +448,10 @@ FOLEY = {"cup": cup, "token": token, "chair_creak": chair_creak, "chair_scrape":
 # ==========================================================================
 
 def bed(kind, n, rng):
-    if kind == "clock":
+    x = sample_bed(kind, n, rng)
+    if x is not None:
+        return x
+    if kind in ("clock", "clock_kitchen"):
         out, t, k = [0.0] * n, rng.uniform(0, 1), 0
         while t * SR < n:
             c = [0.0] * sec(0.05)
@@ -464,24 +474,180 @@ def bed(kind, n, rng):
         if kind == "equipment":
             p = sec(rng.uniform(3, 8))
             while p < n:
-                add(out, relay(rng), p, 0.6)
+                add(out, sample_event("relay", rng) or relay(rng), p, 0.6)
                 p += sec(rng.uniform(5, 18))
         return out
-    if kind == "traffic":
+    if kind in ("traffic", "summer"):
         out, p = [0.0] * n, sec(rng.uniform(5, 20))
         while p < n:
-            add(out, car(rng), p, rng.uniform(0.5, 1.0))
+            add(out, sample_event("car", rng) or car(rng), p, rng.uniform(0.5, 1.0))
             p += sec(rng.uniform(18, 40))
         return out[:n]
     if kind == "house":
         out, p = [0.0] * n, sec(rng.uniform(8, 20))
         while p < n:
-            add(out, chair_creak(rng), p, rng.uniform(0.3, 0.6))
+            add(out, sample_event("chair_creak", rng) or chair_creak(rng), p, rng.uniform(0.3, 0.6))
             p += sec(rng.uniform(15, 45))
         return out[:n]
     if kind == "room":
         return lp1(noise(n, rng), 400)
     raise SystemExit("unknown bed: %s" % kind)
+
+
+# ==========================================================================
+# Recorded samples
+# ==========================================================================
+
+_samples = None
+_decoded = {}
+_segments = {}
+
+
+def sample_map():
+    global _samples
+    if _samples is None:
+        path = os.path.join(SAMPLE_DIR, "samples.json")
+        _samples = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {"files": {}, "events": {}, "beds": {}}
+    return _samples
+
+
+def load_sample(name):
+    if name not in _decoded:
+        src = os.path.join(SAMPLE_DIR, sample_map()["files"][name])
+        os.makedirs(CACHE_DIR, exist_ok=True)
+        dst = os.path.join(CACHE_DIR, name + ".wav")
+        if not os.path.exists(dst) or os.path.getmtime(dst) < os.path.getmtime(src):
+            subprocess.run(["afconvert", "-f", "WAVE", "-d", "LEI16@%d" % SR, "-c", "1", src, dst], check=True)
+        _decoded[name] = read_wav_any(dst)
+    return _decoded[name]
+
+
+def envelope(x, frame=220):
+    return [math.sqrt(sum(v * v for v in x[i:i + frame]) / frame) for i in range(0, max(1, len(x) - frame), frame)]
+
+
+def find_events(name, lo, hi, rel=0.1, gap=0.08):
+    """Split a recording into separate sound events by level."""
+    key = (name, lo, hi, rel, gap)
+    if key in _segments:
+        return _segments[key]
+    x = load_sample(name)
+    frame = 220
+    env = envelope(x, frame)
+    srt = sorted(env)
+    floor, peak = srt[len(srt) // 5], srt[-1]
+    thr = max(floor * 3.0, peak * rel)
+    runs, start, quiet = [], None, 0
+    for i, e in enumerate(env):
+        if e > thr:
+            if start is None:
+                start = i
+            quiet = 0
+        elif start is not None:
+            quiet += 1
+            if quiet * frame / SR > gap:
+                runs.append((start, i - quiet + 1))
+                start, quiet = None, 0
+    if start is not None:
+        runs.append((start, len(env)))
+    segs = []
+    for a, b in runs:
+        a = max(0, a * frame - sec(0.015))
+        b = min(len(x), b * frame + sec(0.06))
+        d = (b - a) / SR
+        if d >= lo:
+            segs.append((a, min(b, a + sec(hi))))
+    _segments[key] = segs
+    return segs
+
+
+def fade(x, fin=0.003, fout=0.02):
+    n = len(x)
+    a, b = max(1, sec(fin)), max(1, sec(fout))
+    return [v * min(1.0, i / a) * min(1.0, (n - i) / b) for i, v in enumerate(x)]
+
+
+def sample_event(kind, rng, pitch=1.0):
+    """A recorded event of this kind, or None if there is no sample for it."""
+    spec = sample_map()["events"].get(kind)
+    if not spec:
+        return None
+    names = [n for n in spec["from"] if n in sample_map()["files"]]
+    if not names:
+        return None
+    name = rng.choice(names)
+    x = load_sample(name)
+    if "window" in spec:
+        w = sec(rng.uniform(*spec["window"]))
+        if spec.get("peak"):
+            env = envelope(x, sec(0.25))
+            centers = sorted(range(len(env)), key=lambda i: -env[i])[:max(1, len(env) // 6)]
+            c = rng.choice(centers) * sec(0.25)
+            a = min(max(0, c - w // 2), max(0, len(x) - w))
+        else:
+            a = rng.randrange(0, max(1, len(x) - w))
+        clip = x[a:a + w]
+        clip = fade(clip, 0.15, 0.4)
+    else:
+        segs = find_events(name, spec.get("min", 0.05), spec.get("max", 2.0), spec.get("rel", 0.1), spec.get("gap", 0.08))
+        if not segs:
+            return None
+        if spec.get("whole"):
+            a, b = segs[0][0], segs[-1][1]
+            b = min(b, a + sec(spec.get("max", 3.0)))
+        elif spec.get("pick") == "last":
+            a, b = segs[-1]
+        else:
+            a, b = rng.choice(segs)
+        clip = fade(x[a:b])
+    clip = resample(clip, pitch * rng.uniform(0.96, 1.04))
+    return norm(clip, spec.get("level", 1.0) * rng.uniform(0.8, 1.0))
+
+
+def sample_bed(kind, n, rng):
+    spec = sample_map()["beds"].get(kind)
+    if not spec or spec.get("from") not in sample_map()["files"]:
+        return None
+    name = spec["from"]
+    x = load_sample(name)
+    if spec["mode"] == "ticks":
+        segs = find_events(name, 0.01, 0.3, spec.get("rel", 0.25), 0.03)
+        if len(segs) < 4:
+            return None
+        gaps = sorted((segs[i + 1][0] - segs[i][0]) / SR for i in range(len(segs) - 1))
+        period = gaps[len(gaps) // 2]
+        out, t, k = [0.0] * n, rng.uniform(0, period), rng.randrange(len(segs))
+        while t * SR < n:
+            a, b = segs[k % len(segs)]
+            add(out, fade(x[a:b], 0.001, 0.01), t * SR)
+            t += period + rng.uniform(-0.003, 0.003)
+            k += 1
+        return out[:n]
+    if spec["mode"] == "loop":
+        out, pos = [], 0
+        xf = sec(0.8)
+        while len(out) < n + xf:
+            w = sec(rng.uniform(4, 8))
+            a = rng.randrange(0, max(1, len(x) - w))
+            piece = x[a:a + w]
+            if out:
+                for i in range(min(xf, len(piece))):
+                    g = i / xf
+                    out[-xf + i] = out[-xf + i] * math.cos(g * math.pi / 2) + piece[i] * math.sin(g * math.pi / 2)
+                out.extend(piece[xf:])
+            else:
+                out.extend(piece)
+        return out[:n]
+    if spec["mode"] == "events":
+        out, p = [0.0] * n, sec(rng.uniform(*spec.get("first", [3, 15])))
+        while p < n:
+            e = sample_event(spec["event"], rng)
+            if e is None:
+                return None
+            add(out, e, p, rng.uniform(0.5, 1.0))
+            p += sec(rng.uniform(*spec["every"]))
+        return out[:n]
+    return None
 
 
 # ==========================================================================
@@ -538,7 +704,7 @@ def trim(x, thr=0.004):
     return x[max(0, a - 150):min(len(x), b + 300)]
 
 
-def humanize(text, rng, vol):
+def humanize(text, rng, vol, pv=3):
     """Turn script text into `say` text with phrase-level prosody changes.
 
     Markup:  *word* emphasis   _words_ quiet   ... long hesitation
@@ -560,7 +726,7 @@ def humanize(text, rng, vol):
         elif part == "--":
             out.append("[[slnc %d]]" % rng.randint(80, 200))
         elif part.strip():
-            dp = rng.choice([-3, -2, -1, 0, 0, 1, 2, 3])
+            dp = rng.randint(-pv, pv)
             dr = rng.randint(-14, 12)
             v = vol * rng.uniform(0.8, 1.0)
             out.append("[[pbas %+d]][[volm %.2f]][[rate %+d]]%s[[rate %+d]]" % (dp, v, dr, emph(part), -dr))
@@ -575,7 +741,7 @@ def speak(text, spk, rng):
     rate = int(spk.get("rate", 170) / shift)
     d = tempfile.mkdtemp()
     aiff, wav = os.path.join(d, "s.aiff"), os.path.join(d, "s.wav")
-    said = humanize(text, rng, spk.get("vol", 0.85)) if spk.get("humanize", True) else text
+    said = humanize(text, rng, spk.get("vol", 0.85), spk.get("pitch_var", 3)) if spk.get("humanize", True) else text
     subprocess.run(["say", "-v", voice, "-r", str(rate), "-o", aiff, said], check=True)
     subprocess.run(["afconvert", "-f", "WAVE", "-d", "LEI16@%d" % SR, "-c", "1", aiff, wav], check=True)
     x = read_wav_any(wav)
@@ -719,7 +885,12 @@ def build(script_path):
     cursor = sec(sc.get("lead", 1.0))
     last_who = None
 
-    def put(clip, at, dist, gain):
+    debug = os.environ.get("PIS_AUDIO_DEBUG")
+
+    def put(clip, at, dist, gain, label=""):
+        if debug and label:
+            pk = max((abs(v) for v in clip), default=0) * gain * (1 - 0.5 * dist)
+            print("    %6.2fs  %-26s peak %.2f" % (at / SR, label, pk))
         c = place_prep(clip, dist)
         add(dry, c, at, gain * (1 - 0.5 * dist))
         add(wet, c, at, gain * room.get("wet", 0.2) * (0.3 + dist))
@@ -738,27 +909,27 @@ def build(script_path):
             at += sec(gap)
             dist = seg.get("dist", spk.get("dist", 0.3))
             if seg.get("breath", len(seg["text"].split()) >= 4 and rng.random() < 0.5):
-                b = breath(rng)
+                b = sample_event("breath", rng) or breath(rng)
                 put(b, at - len(b) + sec(0.05), dist, spk.get("breath_gain", 1.0))
             if rng.random() < 0.15:
                 put(lips(rng), at - sec(0.08), dist, 1.0)
             clip = speak(seg["text"], spk, rng)
             if seg.get("cut"):
                 clip = clip[:max(0, len(clip) - sec(seg["cut"]))]
-            put(clip, at, dist, seg.get("gain", 1.0) * spk.get("gain", 1.0))
+            put(clip, at, dist, seg.get("gain", 1.0) * spk.get("gain", 1.0), "say %s: %s" % (who, seg["text"][:14]))
             end = at + len(clip)
             last_who = who
         elif "fx" in seg:
             spk = speakers.get(seg.get("who"), {})
-            clip = HUMAN[seg["fx"]](rng, spk.get("f0", 120))
+            f0 = spk.get("f0", 120)
+            clip = sample_event(seg["fx"], rng, pitch=1.15 if f0 > 170 else 1.0) or HUMAN[seg["fx"]](rng, f0)
             at += sec(seg.get("gap", 0.15))
-            put(clip, at, seg.get("dist", spk.get("dist", 0.3)), seg.get("gain", 1.0))
+            put(clip, at, seg.get("dist", spk.get("dist", 0.3)), seg.get("gain", 1.0), "fx " + seg["fx"])
             end = at + len(clip)
         elif "sfx" in seg:
-            fn = FOLEY[seg["sfx"]]
-            clip = fn(rng, **seg.get("args", {}))
+            clip = sample_event(seg["sfx"], rng) or FOLEY[seg["sfx"]](rng, **seg.get("args", {}))
             at += sec(seg.get("gap", 0.1))
-            put(clip, at, seg.get("dist", 0.4), seg.get("gain", 0.3))
+            put(clip, at, seg.get("dist", 0.4), seg.get("gain", 0.3), "sfx " + seg["sfx"])
             end = at + len(clip)
         else:
             raise SystemExit("bad segment: %r" % seg)

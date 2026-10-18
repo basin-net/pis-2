@@ -8,15 +8,15 @@
   "stop": true,
   "room": {"size": 0.85, "wet": 0.22},
   "speakers": {
-    "INT":    {"voices": ["Evan", "Tom", "Reed"],          "rate": 158, "dist": 0.2,  "f0": 115, "vol": 0.85},
-    "PRUITT": {"voices": ["Nathan", "Grandpa"],    "rate": 126, "dist": 0.45, "f0": 102, "vol": 0.8, "drift": 0.016, "shift": 0.98},
-    "WIFE":   {"voices": ["Ava", "Susan", "Samantha"],     "rate": 165, "dist": 0.6,  "f0": 205, "vol": 0.75}
+    "INT":    {"voices": ["Evan", "Reed"], "rate": 158, "dist": 0.2, "f0": 115, "vol": 0.85, "pitch_var": 2},
+    "PRUITT": {"voices": ["Alex", "Grandpa"], "rate": 126, "dist": 0.45, "f0": 102, "vol": 0.8, "drift": 0.016, "shift": 0.96, "pitch_var": 2},
+    "WIFE":   {"voices": ["Samantha"], "rate": 165, "dist": 0.6, "f0": 205, "vol": 0.75, "pitch_var": 2}
   },
   "beds": [
-    {"type": "clock",   "gain": 0.035, "dist": 0.7},
-    {"type": "traffic", "gain": 0.05,  "dist": 0.9},
-    {"type": "house",   "gain": 0.06,  "dist": 0.8},
-    {"type": "room",    "gain": 0.02,  "dist": 0.5}
+    {"type": "clock", "gain": 0.035, "dist": 0.7},
+    {"type": "traffic", "gain": 0.05, "dist": 0.9},
+    {"type": "house", "gain": 0.06, "dist": 0.8},
+    {"type": "room", "gain": 0.02, "dist": 0.5}
   ],
   "timeline": [
     {"sfx": "clunk", "gain": 0.35, "dist": 0.05},

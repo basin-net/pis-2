@@ -15,6 +15,17 @@ python3 tools/make_audio.py tools/audio/aud-62-004.json
 
 作中では、ダビングした録音の声はすべて J-7 手続 96-4（話者マスキング）を通した、という設定です。読み上げ音声の平板さは、この「マスキング」として扱います。
 
+## 録音素材（samples/）
+
+物音・環境音・咳やため息は、`samples/` にある実際の録音（Wikimedia Commons のパブリックドメイン／CC BY 素材）を優先して使います。素材がない種類だけ、合成音に切り替わります。
+
+- 素材の一覧と使い方は `samples/samples.json`、出典とライセンスは `samples/CREDITS.md` にあります。
+- `events` に書いた種類は、録音を音の切れ目で自動的に1つずつに分け、毎回違うものを選び、高さと大きさを少し変えて使います（咳1回、硬貨1枚、カップ1回）。
+- `"whole": true` は録音全体を1つの音として使い、`"window"` は長い録音から一部を切り出して使います。`"pick": "last"` は最後の1つだけを使います。
+- `beds` の `ticks` は時計の音を1拍ずつに分けて元の速さで並べ直し、`loop` は長い録音をつなぎ目なく繰り返し、`events` はときどき鳴らします。
+- 新しい素材を足すときは、ファイルを `samples/` に置き、`samples.json` に登録し、`CREDITS.md` に出典とライセンスを書いてください。パブリックドメイン、CC0、CC BY のものだけを使います（CC BY-SA や非商用ライセンスは使いません）。
+- 初回の実行時に、素材は `tools/audio/.cache/` に WAV として展開されます（Git には入れません）。
+
 ## 全体
 
 ```json
@@ -56,6 +67,7 @@ python3 tools/make_audio.py tools/audio/aud-62-004.json
 | `vol` | 基本の声量（0〜1） |
 | `drift` | 声の高さのゆっくりした揺れ幅。0.01〜0.02 |
 | `shift` | 声全体の高さを変える倍率。1.2 前後で子どもの声になる |
+| `pitch_var` | 句ごとの声の高さの揺れ幅（既定 3）。Enhanced／Premium の声は反応が大きいので 2 くらいにする |
 
 ## 背景音 `beds`
 
@@ -74,7 +86,7 @@ python3 tools/make_audio.py tools/audio/aud-62-004.json
 | `["INT", "Who closed the door?"]` | 台詞 |
 | `{"say": "INT", "text": "...", "gap": 0.2, "breath": false, "cut": 0.15, "gain": 0.8}` | 台詞（細かく指定）。`gap` は直前との間、`cut` は末尾を切る秒数（言いかけて遮られる） |
 | `{"pause": 2.5}` | 沈黙 |
-| `{"fx": "cough", "who": "PRUITT"}` | 人の音：`cough` 咳、`throat` 咳払い、`breath` 息を吸う、`sigh` ため息、`sniff` 鼻をすする、`lips` 口の音 |
+| `{"fx": "cough", "who": "PRUITT"}` | 人の音：`cough` 咳、`throat` 咳払い、`breath` 息、`sigh` ため息（ここまで録音素材）、`sniff` 鼻をすする、`lips` 口の音（合成） |
 | `{"sfx": "cup", "dist": 0.35, "gain": 0.4}` | 物音（下の表） |
 | `"hold": true` | 次の音を待たせずに重ねる（足音を鳴らしながら話す、など） |
 | `"offset": -0.1` | 位置をずらす。負の値なら前の音にかぶせる |

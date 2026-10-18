@@ -7,14 +7,15 @@
   "tail": 0.5,
   "room": {"size": 0.7, "wet": 0.2},
   "speakers": {
-    "INT":   {"voices": ["Evan", "Eddy"],                       "rate": 158, "dist": 0.2,  "f0": 118, "vol": 0.85},
-    "SUBJ":  {"voices": ["Ava", "Allison", "Susan", "Samantha"], "rate": 160, "dist": 0.45, "f0": 200, "vol": 0.85, "drift": 0.015},
-    "CHILD": {"voices": ["Samantha"],                            "rate": 150, "dist": 0.75, "f0": 280, "vol": 0.8, "shift": 1.22}
+    "INT":   {"voices": ["Tom", "Eddy"], "rate": 158, "dist": 0.2, "f0": 118, "vol": 0.85, "pitch_var": 2},
+    "SUBJ":  {"voices": ["Joelle", "Samantha"], "rate": 160, "dist": 0.45, "f0": 200, "vol": 0.85, "drift": 0.015, "pitch_var": 2},
+    "CHILD": {"voices": ["Samantha"], "rate": 150, "dist": 0.75, "f0": 280, "vol": 0.8, "shift": 1.22, "pitch_var": 3}
   },
   "beds": [
-    {"type": "fridge",  "gain": 0.05, "dist": 0.6},
-    {"type": "traffic", "gain": 0.04, "dist": 0.95},
-    {"type": "room",    "gain": 0.02, "dist": 0.5}
+    {"type": "fridge", "gain": 0.06, "dist": 0.6},
+    {"type": "clock_kitchen", "gain": 0.03, "dist": 0.7},
+    {"type": "summer", "gain": 0.04, "dist": 0.95},
+    {"type": "room", "gain": 0.02, "dist": 0.5}
   ],
   "timeline": [
     {"sfx": "rustle", "gain": 0.35, "dist": 0.0},
