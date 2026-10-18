@@ -30,6 +30,7 @@ A room of 61.250 sq ft is maintained at SITE 9 (Cell 3). Its occupancy is
 zero. A person placed in Cell 3 with the door closed is laminated and is not
 remembered; every record that names the person is revised. No body, no
 record, no witness who can say who it was.
+Cell 3 is acoustically isolated. Its intercom is disconnected while the door is closed, and operators are rotated every 60 days.
 Uses approved: Q-4 resolutions; detainees whose continued existence is a
 liability; Consumables (H) at end of protocol.
 FINDING: Approved 1966. Utilization is reported annually by count only.

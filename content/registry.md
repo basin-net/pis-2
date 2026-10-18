@@ -17,7 +17,7 @@ keywords: registry assets pa abstract rating class utility disclosure correlatio
 
 | DESIG. | CODENAME | ABSTRACT | SITE | RATING | STATUS |
 |---|---|---|---|---|---|
-| {m} [[PA-001]] | HEADCOUNT | Rooms of certain floor areas impose a maximum occupancy. Persons in excess are laminated into the floor and are not remembered. | WORLDWIDE | {nowrap} IV / U4 / D0 | NOT APPLICABLE |
+| {m} [[PA-001]] | HEADCOUNT | Rooms of certain floor areas impose a maximum occupancy. Persons in excess are forced into the floor, with a loud sound, and are not remembered. | WORLDWIDE | {nowrap} IV / U4 / D0 | NOT APPLICABLE |
 
 ## PUBLIC CORRELATION REPORTS (CR-), OPEN
 

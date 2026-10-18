@@ -13,7 +13,7 @@ keywords: research experiment exp protocol lamina blind tally surveyor field eva
 
 | EXP. NO. | DATE | ROOM | PROTOCOL | RESULT | STATUS |
 |---|---|---|---|---|---|
-| {m} EXP-63-001 | {m} JAN 63 | K-01 replica, SITE 1 | First reproduction. Consumables (H): 15. | One laminated. No one present could say who. | COMPLETE |
+| {m} EXP-63-001 | {m} JAN 63 | K-01 replica, SITE 1 | First reproduction. Consumables (H): 15. | One laminated. All present heard the sound; none could say what had made it. Four requested transfer. | COMPLETE |
 | {m} [[EXP-64-019]] | {m} 17 FEB 64 | K-02 replica, SITE 9 | Blind Tally. Consumables (H): 10. | Nine counted, ten tokens. | COMPLETE |
 | {m} EXP-67-008 | {m} MAR 67 | K-04, SITE 9 | Counting of persons in whom brain death has been determined. | Not counted. | COMPLETE |
 | {m} [[SUR-73-F]] | {m} 1964–73 | Accordion, SITE 9 | Project SURVEYOR. Traversal of floor area. | 17 values. 312 tokens unreturned. | TERMINATED |
