@@ -9,7 +9,7 @@
   "room": {"size": 0.85, "wet": 0.22},
   "speakers": {
     "INT":    {"voices": ["Evan", "Reed"], "rate": 158, "dist": 0.2, "f0": 115, "vol": 0.85, "pitch_var": 2},
-    "PRUITT": {"voices": ["Alex", "Grandpa"], "rate": 126, "dist": 0.45, "f0": 102, "vol": 0.8, "drift": 0.016, "shift": 0.96, "pitch_var": 2},
+    "PRUITT": {"voices": ["Nathan", "Alex", "Grandpa"], "rate": 118, "dist": 0.45, "f0": 102, "vol": 0.8, "drift": 0.016, "shift": 0.95, "pitch_var": 1},
     "WIFE":   {"voices": ["Samantha"], "rate": 165, "dist": 0.6, "f0": 205, "vol": 0.75, "pitch_var": 2}
   },
   "beds": [
