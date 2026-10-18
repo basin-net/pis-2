@@ -81,6 +81,7 @@ WICKER-1 (aware of program) · WICKER-2 (support) · **WICKER-3** (analyst, cust
 | Quieting | Management of witnesses. Q-1 observe. Q-2 discredit. Q-3 relocate. Q-4 resolve. |
 | K-value / K-room | A floor area at which PA-001 applies; a room at that area. A K-room is "live" while it is at value. |
 | Lamination | What happens to a person in excess of a K-room's occupancy: forced into the floor in 6 to 9 seconds, with a sound of fracture and grinding. Only the top surface hardens, to the floor's original character; each subject remains a separate layer beneath it. |
+| Compression value | 1/32 of a K-room's ceiling height. Its floor does not rise above it: older laminae are compressed instead. |
 | Shortfall | What the people who knew that person feel afterwards. |
 | Blind Tally | Counting by numbered token, without names. |
 | Morning Count | Daily count of all personnel by number. |
