@@ -1,0 +1,31 @@
+{
+  "out": "aud-89-001.wav",
+  "note": "INC-89-001. Last voice transmission, SITE 22 to HQ Watch, 14 MAR 1989 0317.",
+  "style": "radio",
+  "seed": 89001,
+  "lead": 1.2,
+  "tail": 5.0,
+  "voices": {
+    "S22": ["Rocko", "en_US", 188],
+    "HQ": ["Eddy", "en_US", 165]
+  },
+  "segments": [
+    {"sfx": "squelch"},
+    ["S22", "all levels accounted for, except Level Three. Level Three is not responding."],
+    {"pause": 0.2},
+    ["S22", "The Level Three door is open. It was opened from the inside."],
+    {"pause": 0.2},
+    ["S22", "Repeat. From the inside."],
+    {"pause": 0.2},
+    {"speaker": "S22", "text": "We are sending two down now. Will call back in ten minutes.", "cut": 0.45, "after": 0.0},
+    {"sfx": "squelch"},
+    {"pause": 2.2},
+    {"sfx": "squelch"},
+    ["HQ", "Site Twenty-Two. Say again your last."],
+    {"sfx": "squelch"},
+    {"pause": 4.5},
+    {"sfx": "squelch"},
+    ["HQ", "Site Twenty-Two. H Q Watch. Over."],
+    {"sfx": "squelch"}
+  ]
+}

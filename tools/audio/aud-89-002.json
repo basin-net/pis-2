@@ -1,0 +1,15 @@
+{
+  "out": "aud-89-002.wav",
+  "note": "INC-89-001. SITE 22 line open, 14 MAR 1989 0921. First 30 seconds of 6:02. No voice.",
+  "style": "line",
+  "seed": 89002,
+  "lead": 0.5,
+  "tail": 0.5,
+  "segments": [
+    {"pause": 11.3},
+    {"sfx": "click", "gain": 0.08},
+    {"pause": 12.4},
+    {"sfx": "click", "gain": 0.05},
+    {"pause": 5.5}
+  ]
+}

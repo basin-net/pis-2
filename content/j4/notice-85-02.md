@@ -1,0 +1,31 @@
+---
+id: J4-NOTICE-85-02
+title: J-4 FILE: NOTICE OF MEETING, 19 MAR 1985
+parent: J4-INDEX
+doc: PIS-J4-85N02
+modified: 15 MAR 1985
+kind: legacy
+date: 1985-03-15
+summary: All J-4 personnel to attend a meeting on Box 61 in Rm 2-114 at 0900 on 19 March 1985. The door will be closed.
+keywords: notice meeting j-4 all hands rm 2-114 box 61 sensitive door closed sg-63 instruction 63-2 copy
+---
+
+```doc
+J-4 LOGISTICS AND MATERIEL                                 J4-NOTICE-85-02
+
+NOTICE OF MEETING
+
+TO:       ALL J-4 PERSONNEL
+FROM:     J-4 [BLANK -- PEN IMPRESSION PRESENT]
+DATE:     15 MAR 1985
+
+MEETING:  ALL HANDS. TUESDAY 19 MAR 1985, 0900. RM 2-114.
+SUBJECT:  BOX 61 (SENSITIVE).
+
+ATTENDANCE IS MANDATORY. SIGN IN AT THE DOOR.
+DO NOT DISCUSS OUTSIDE J-4.
+THE DOOR WILL BE CLOSED FOR THE DURATION OF THE MEETING.
+
+COPY: CUSTODIAN, AS REQUIRED BY SG-63 INSTRUCTION 63-2
+      ("ALL MATTERS CONCERNING 1962 CIVIL DEFENSE RECORDS").
+```
