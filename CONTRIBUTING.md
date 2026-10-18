@@ -24,31 +24,30 @@
 - 1997年より後の技術や出来事は出しません。
 - ゴア描写は必要最小限にします。説明は臨床的に、短く。
 - 墨塗り（`[[x:8]]`）は「隠しているもの」があるときだけ使います。乱用しないでください。
-- 民間伝承の名前（"MOTHMAN" など）は `PUBLIC CORRELATION` 欄にだけ書きます。作中では文書に書くことが違反なので、本文では使いません。
 
 ## 3. 文書の書き方
 
 ### ファイルの場所と番号
 | 種類 | 置き場所 | ID の例 | `kind` |
 |---|---|---|---|
-| 資産ファイル | `content/assets/` | `MA-009` | `asset` |
+| 資産ファイル | `content/assets/` | `PA-002` | `asset` |
 | 事故報告 | `content/docs/` | `INC-77-012` | `incident` |
 | 実験・野外評価・計画報告 | `content/docs/` | `EXP-81-004`、`FE-79-01` | `experiment` |
 | 分析 | `content/docs/` | `ANL-90-007` | `analysis` |
 | 聴取記録 | `content/docs/` | `TR-88-031` | `transcript` |
 | 記録・伝票・ログ | `content/docs/` | `MC-...`、`FWO-...` | `log` |
 
-**designation（BA-、MA-、PA-、LA-、HA-）は運営が割り当てます。** 書き始める前に Issue で「Designation request」を出してください。レジストリにある「Open designation」の番号から割り当てます。
+**designation（BA-、MA-、PA-、LA-、HA-）は運営が割り当てます。** 書き始める前に Issue で「Designation request」を出してください。現在サイトに載っている asset は PA-001 だけです。
 
 ### front matter
 ファイルの先頭に、次のような項目を書きます。
 
 ```
 ---
-id: MA-009
-title: ASSET FILE: MA-009 (CODENAME)
+id: PA-002
+title: ASSET FILE: PA-002 (CODENAME)
 parent: registry
-doc: PIS-AF-M009
+doc: PIS-AF-P002
 modified: 14 OCT 1997
 kind: asset
 date: 1974-05-14
@@ -96,7 +95,6 @@ typewriter の枠の中ではリンクと墨塗りだけが有効です。太字
 - PA-001 HEADCOUNT の起源（なぜ K値がその値なのか）
 - J-4、Rm 2-114
 - R. D. Pruitt と、K-01 の事件
-- SITE 22、BA-040、LA-007
 - Count Day 1997（1997年10月27日）
 
 既存の文書と矛盾しそうなときは、先に Issue で相談してください。

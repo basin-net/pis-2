@@ -90,8 +90,7 @@
   }
 
   /* ---------------- search ---------------- */
-  var FOLK = /moth\s*-?man|sasquatch|big\s*foot|chupacabra|dover\s*demon|jersey\s*devil|\bchamp\b|death\s*worm|olgoi|yeti|cryptid/i;
-  var RESTRICT = /custodian|annex\s*-?\s*k\b|\bline\s*-?\s*7\b|\bl-?7\b|site\s*-?\s*22|ba\s*-?\s*0?(33|40)\b/i;
+  var RESTRICT = /custodian|annex\s*-?\s*k\b|\bline\s*-?\s*7\b|\bl-?7\b/i;
 
   function hsh(str) { var h = 7; for (var i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0; return h; }
 
@@ -109,13 +108,6 @@
     line('TIME ............... ' + zulu());
     line('');
 
-    if (FOLK.test(q)) {
-      if (acked()) addViolation();
-      line('NOTICE: QUERY CONTAINS A PUBLIC CORRELATION TERM.');
-      line('USE OF FOLKLORE NAMES IS A REPORTABLE VIOLATION UNDER DIRECTIVE 91-02.');
-      line('THIS QUERY HAS BEEN LOGGED. NO RESULTS RETURNED.');
-      return;
-    }
     if (RESTRICT.test(q)) {
       if (acked()) addViolation();
       line('QUERY TERM RESTRICTED.');

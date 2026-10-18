@@ -17,23 +17,22 @@ keywords: index bulletins contents what's new
 
 | {w=84} DATE | BULLETIN |
 |---|---|
-| {m} 14 OCT 97 | SITE 7 remains at Containment Condition **AMBER** following the 09 OCT power interruption. All non-essential travel to SITE 7 is suspended until further notice. Ref. [[incidents|INC-97-031]]. |
-| {m} 10 OCT 97 | Reminder: assets are to be referred to by designation or codename only. Use of public correlation ("folklore") names in written correspondence is a reportable security violation. Ref. [[directives|Directive 91-02]]. |
+| {m} 14 OCT 97 | J-6 Gap Analysis has referred two new Correlation Reports (CR-97-114, CR-97-118) to Directorate P as possible live K-rooms in public use. See [[registry|Asset Registry]]. |
+| {m} 10 OCT 97 | Reminder: personnel experiencing unexplained grief, or habits they cannot account for, are to report to J-1 Medical and are not to discuss them with colleagues. Ref. [[directives|Directive 95-06]]. |
 | {m} 08 OCT 97 | **COUNT DAY, MONDAY 27 OCT.** All program personnel, at all sites, will be counted in person by J-7 at 0800 local. Leave will not be granted for 27 OCT. Personnel who are not counted will be presumed to be accounted for. |
 | {m} 06 OCT 97 | SOP 4-1 (Containment Breach Response) has been superseded by Rev. F. Hard copy is held at every duty station. Read it before your next watch. |
-| {m} 02 OCT 97 | The SITE 22 line was reported open at 0244Z for approximately four minutes. The J-2 Watch did not acknowledge. This is the correct response. Personnel are reminded of [[directives|Directive 88-14]], para. 6. |
 | {m} 30 SEP 97 | Rm 2-114 remains closed. It is **not** to be used as overflow seating on Count Day or at any other time. Ref. [[directives|Directive 85-04]]. |
-| {m} 22 SEP 97 | The BA-009 activity index exceeded 7.0 for the third time this quarter. Standing Order 9-A is in effect. Ref. [[BA-009]]. |
+| {m} 22 SEP 97 | SITE 9 Cell 3 (K-03) utilization for FY97 has been reported to the ARB by count: 14. |
 
 ## CONTENTS
 
-- [[registry|Asset Registry]] — All held and monitored assets, all directorates. An abstract is given for every entry.
+- [[registry|Asset Registry]] — Assets carried on this server, with abstracts. Open public correlation reports.
 - [[PA-001|PA-001 HEADCOUNT]] — Controlling file for the occupancy phenomenon. Directorate P.
-- [[sites|Containment Sites]] — Status of active, decommissioned and sealed facilities. Containment Conditions.
-- [[research|Research Log]] — Experiment register, FY97.
-- [[applied|WICKER-APPLIED]] — Proposals for military and national use of assets. Board findings.
-- [[incidents|Incident Reports]] — Breaches, losses and unresolved events.
-- [[directives|Standing Directives]] — Directives, standing orders, SOPs and forms in force.
+- [[sites|Containment Sites]] — PA-001 sites and rooms held in situ. Containment Conditions.
+- [[research|Research Log]] — PA-001 experiment register.
+- [[applied|WICKER-APPLIED]] — Proposals for military and national use of PA-001. Board findings.
+- [[incidents|Incident Reports]] — Recorded PA-001 events.
+- [[directives|Standing Directives]] — Directives, SOPs and forms in force.
 - [[records|Records Index]] — Every document on this server, by type and date.
 - [[audio|Audio Holdings]] — Recordings playable on this server.
 - [[organization|Organization]] — Office structure and lines of authority.
@@ -45,7 +44,5 @@ keywords: index bulletins contents what's new
 ## WHAT'S NEW ON THIS SERVER
 
 - 10 OCT 97 — [[J4-INDEX|J-4 legacy files]] scanned under Records Digitization Project 96-2 are now on this server. The files have not been reviewed.
-- 10 OCT 97 — Asset file [[BA-026]] revised (R22).
-- 08 OCT 97 — Asset file [[BA-013]] revised (R6). Specimen count corrected.
 - 06 OCT 97 — Asset file [[PA-001]] revised (R31). K-value extract updated.
 - 03 OCT 97 — Selected reel-to-reel holdings have been dubbed to 11 kHz digital audio and can be played on this server. See [[audio|Audio Holdings]].

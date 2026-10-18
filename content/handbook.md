@@ -74,7 +74,7 @@ WICKER-1 (aware of program) · WICKER-2 (support) · **WICKER-3** (analyst, cust
 | Consumable (H) / (A) | Test subject, human or animal. Requisitioned through J-1. |
 | Volunteer | A Consumable (H) who has signed a consent form. The form does not describe the protocol. |
 | Expended | Used up. Applies to assets, materials and Consumables. |
-| Correlation | The match between an asset and public folklore. Folklore names are not used in correspondence. |
+| Correlation Report | A public report (rumor, letter, call-in program) that may concern an asset. Referred to J-6. |
 | Residual | Physical or documentary trace left after an event. |
 | Reconciliation | Revision of public records after an event so that they agree with each other. |
 | Gap Analysis | Search of public records for numbering gaps, blank lines and unexplained quantities. Principal means of detecting PA-001 events in the public. |
