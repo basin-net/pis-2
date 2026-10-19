@@ -65,7 +65,7 @@ INC- incident · EXP- experiment · SUR- survey program · FE- field evaluation 
 
 WICKER-1 (aware of program) · WICKER-2 (support) · **WICKER-3** (analyst, custodial staff) · WICKER-4 (Site Director, Principal Investigator) · WICKER-5 (directorate head and above).
 
-{small} Note (J-7): CUSTODIAN designators do not correspond to any clearance level administered by J-7. "CUSTODIAN-7" is not a clearance level. Requests for CUSTODIAN read-in will not be processed.
+{small} Note (J-7): CUSTODIAN designators do not correspond to any clearance level administered by J-7. Requests for CUSTODIAN read-in will not be processed.
 
 ## 7. GLOSSARY
 

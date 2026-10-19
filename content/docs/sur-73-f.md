@@ -32,8 +32,8 @@ The Accordion is stepped through floor area in increments of 1 sq in. At each st
 Subjects laminated (tokens unreturned): 312. This includes confirmation runs (each value confirmed twice) and losses during the Pass B recalibration of SEP 1967. Consumables (H) were supplied by J-1 throughout.
 
 4. FINDINGS
-a. 17 values identified. Every one is a whole number of square inches.
-b. Pass C found nothing. Values above 700 sq ft, if any exist, have occupancy of 40 or more: consistent with an occupancy of about one person per 10 sq ft.
+a. 17 values identified.
+b. Pass C found nothing. Values above 700 sq ft, if any exist, have occupancy of 40 or more.
 c. In the ranges swept, values whose occupancy is at or above N cannot be found by this method. Their number is unknown.
 
 5. RECOMMENDATION
