@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Build the PIS-2 // WICKER BASIN site.
 
-Reads Markdown documents from content/, renders them into 1990s-style HTML
-with templates/, copies static/, and writes everything to _site/.
+Reads Markdown documents from content/ (English) and ja/content/ (Japanese),
+renders them into 1990s-style HTML with templates/ and ja/templates/, copies
+static/, and writes everything to _site/ (English) and _site/ja/ (Japanese).
+
+Every page links to the same page in the other edition. A document that has
+not been translated yet links to the other edition's index instead.
 
 Standard library only (Python 3.8+).
 
@@ -18,23 +22,58 @@ import sys
 import wave
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-CONTENT = os.path.join(ROOT, "content")
-TEMPLATES = os.path.join(ROOT, "templates")
 STATIC = os.path.join(ROOT, "static")
 OUT = os.path.join(ROOT, "_site")
 
-DEFAULT_CLASSIFICATION = "TOP SECRET // WICKER BASIN // NOFORN"
+# Order of the generated Records index. Headings are per edition.
+RECORD_KINDS = ["asset", "incident", "experiment", "analysis", "transcript", "log", "legacy"]
 
-# Order and headings used by the generated Records index.
-RECORD_KINDS = [
-    ("asset", "ASSET FILES"),
-    ("incident", "INCIDENT REPORTS"),
-    ("experiment", "EXPERIMENT AND PROGRAM REPORTS"),
-    ("analysis", "ANALYSES"),
-    ("transcript", "TRANSCRIPTS"),
-    ("log", "LOGS, FORMS AND WORK ORDERS"),
-    ("legacy", "J-4 LEGACY FILES (UNREVIEWED SCANS)"),
-]
+STRINGS = {
+    "en": {
+        "classification": "TOP SECRET // WICKER BASIN // NOFORN",
+        "record_kinds": {
+            "asset": "ASSET FILES",
+            "incident": "INCIDENT REPORTS",
+            "experiment": "EXPERIMENT AND PROGRAM REPORTS",
+            "analysis": "ANALYSES",
+            "transcript": "TRANSCRIPTS",
+            "log": "LOGS, FORMS AND WORK ORDERS",
+            "legacy": "J-4 LEGACY FILES (UNREVIEWED SCANS)",
+        },
+        "records_head": ("DOCUMENT", "DATE", "SUBJECT"),
+        "audio_list_head": ("RECORDING", "FORMAT", "LENGTH", "FILED WITH"),
+        "audio": "AUDIO",
+        "audio_missing": "RECORDING NOT ON THIS SERVER. REQUEST FROM CUSTODIAL RECORDS.",
+        "play": "PLAY",
+        "stop": "STOP",
+        "download": "Download .WAV",
+        "fmt": "%d KHZ %d-BIT %s",
+        "mono": "MONO",
+        "stereo": "STEREO",
+    },
+    "ja": {
+        "classification": "極秘 // WICKER BASIN // 外国人開示禁止",
+        "record_kinds": {
+            "asset": "資産ファイル",
+            "incident": "事案報告",
+            "experiment": "実験・計画報告",
+            "analysis": "分析",
+            "transcript": "聴取記録",
+            "log": "記録簿・様式・作業指示",
+            "legacy": "J-4 残存文書（未精査スキャン）",
+        },
+        "records_head": ("文書", "日付", "件名"),
+        "audio_list_head": ("録音", "形式", "長さ", "添付先文書"),
+        "audio": "音声",
+        "audio_missing": "この録音は本サーバーに収録されていない。保管記録課に請求すること。",
+        "play": "再生",
+        "stop": "停止",
+        "download": ".WAV をダウンロード",
+        "fmt": "%dkHz %dビット %s",
+        "mono": "モノラル",
+        "stereo": "ステレオ",
+    },
+}
 
 warnings = []
 
@@ -44,16 +83,61 @@ def warn(msg):
 
 
 # --------------------------------------------------------------------------
+# Editions
+# --------------------------------------------------------------------------
+
+class Edition:
+    """One language version of the site.
+
+    base:   directory holding content/ and templates/, relative to ROOT
+    out:    output directory, relative to _site/
+    static: path from the edition's root to _site/static/
+    """
+
+    def __init__(self, lang, base, out, static, search_index):
+        self.lang = lang
+        self.content = os.path.join(ROOT, base, "content")
+        self.templates_dir = os.path.join(ROOT, base, "templates")
+        self.out = os.path.join(OUT, out)
+        self.prefix = out + "/" if out else ""
+        self.static = static
+        self.search_index = search_index
+        self.s = STRINGS[lang]
+        self.other = None
+        self.docs = []
+        self.index = {}
+        self.by_path = {}
+        self.templates = {}
+        self.audio_refs = []  # (doc, file, label, note) collected before rendering
+
+    def alt_href(self, doc):
+        """Link from doc to the same page in the other edition."""
+        target = doc.rel_out if doc.rel_out in self.other.by_path else "index.html"
+        return doc.root + os.path.relpath(
+            os.path.join(self.other.out, target), self.out).replace(os.sep, "/")
+
+
+EDITIONS = [
+    Edition("en", "", "", "static/", "search-index.js"),
+    Edition("ja", "ja", "ja", "../static/", "search-index.ja.js"),
+]
+EDITIONS[0].other, EDITIONS[1].other = EDITIONS[1], EDITIONS[0]
+
+
+# --------------------------------------------------------------------------
 # Loading
 # --------------------------------------------------------------------------
 
 class Doc:
-    def __init__(self, src):
+    def __init__(self, src, ed):
         self.src = src
-        rel = os.path.relpath(src, CONTENT).replace(os.sep, "/")
+        self.ed = ed
+        rel = os.path.relpath(src, ed.content).replace(os.sep, "/")
         self.rel_out = rel[:-3] + ".html"
+        self.label = ed.prefix + self.rel_out  # used in warnings
         self.depth = self.rel_out.count("/")
-        self.meta, self.body = parse_front_matter(read(src), rel)
+        self.meta, self.body = parse_front_matter(
+            read(src), os.path.relpath(src, ROOT).replace(os.sep, "/"))
         self.id = self.meta.get("id") or rel[:-3]
         self.title = self.meta.get("title", self.id)
         self.kind = self.meta.get("kind", "page")
@@ -89,14 +173,20 @@ def parse_front_matter(text, rel):
     return meta, text[end + 5:]
 
 
-def load_docs():
-    docs = []
-    for dirpath, _dirs, files in os.walk(CONTENT):
+def load_edition(ed):
+    for dirpath, _dirs, files in os.walk(ed.content):
         for name in sorted(files):
             if name.endswith(".md"):
-                docs.append(Doc(os.path.join(dirpath, name)))
-    docs.sort(key=lambda d: d.rel_out)
-    return docs
+                ed.docs.append(Doc(os.path.join(dirpath, name), ed))
+    ed.docs.sort(key=lambda d: d.rel_out)
+    for d in ed.docs:
+        if d.id in ed.index:
+            warn("%s: duplicate id %s (%s, %s)" % (ed.lang, d.id, ed.index[d.id].label, d.label))
+        ed.index[d.id] = d
+        ed.by_path[d.rel_out] = d
+    for name in os.listdir(ed.templates_dir):
+        if name.endswith(".html"):
+            ed.templates[name[:-5]] = read(os.path.join(ed.templates_dir, name))
 
 
 # --------------------------------------------------------------------------
@@ -111,9 +201,10 @@ def esc(s):
 
 
 class Ctx:
-    def __init__(self, doc, index):
+    def __init__(self, doc):
         self.doc = doc
-        self.index = index
+        self.ed = doc.ed
+        self.index = doc.ed.index
         self.root = doc.root
 
 
@@ -132,7 +223,7 @@ def render_link(inner, ctx):
     text = text or target
     doc = ctx.index.get(target)
     if doc is None:
-        warn("%s: broken link [[%s]]" % (ctx.doc.rel_out, target))
+        warn("%s: broken link [[%s]]" % (ctx.doc.label, target))
         return '<a href="%s404.html">%s</a>' % (ctx.root, text)
     return '<a href="%s%s">%s</a>' % (ctx.root, doc.rel_out, text)
 
@@ -329,6 +420,7 @@ def render_body(text, ctx):
 # --------------------------------------------------------------------------
 
 def wav_info(path):
+    """Audio files live in static/audio/ and are shared by every edition."""
     try:
         with wave.open(path, "rb") as w:
             frames, rate = w.getnframes(), w.getframerate()
@@ -336,56 +428,62 @@ def wav_info(path):
         secs = frames / float(rate)
         return {
             "dur": "%d:%02d" % (int(secs) // 60, int(secs) % 60),
-            "fmt": "%d KHZ %d-BIT %s" % (round(rate / 1000.0), bits, "MONO" if ch == 1 else "STEREO"),
+            "khz": round(rate / 1000.0),
+            "bits": bits,
+            "mono": ch == 1,
             "size": "%d KB" % round(os.path.getsize(path) / 1024.0),
         }
     except (OSError, wave.Error, EOFError):
         return None
 
 
-AUDIO_REFS = []  # (doc, file, label, note) collected before rendering
+def wav_fmt(info, s):
+    return s["fmt"] % (info["khz"], info["bits"], s["mono"] if info["mono"] else s["stereo"])
 
 
-def collect_audio(docs):
-    for d in docs:
+def collect_audio(ed):
+    for d in ed.docs:
         for line in d.body.split("\n"):
             s = line.strip()
             if s.startswith("::: audio "):
                 f, label, note = (s[len("::: audio "):].split("|") + ["", ""])[:3]
-                AUDIO_REFS.append((d, f.strip(), label.strip(), note.strip()))
+                ed.audio_refs.append((d, f.strip(), label.strip(), note.strip()))
 
 
 def render_audio(args, ctx):
+    s = ctx.ed.s
     f, label, note = (args.split("|") + ["", ""])[:3]
     f, label, note = f.strip(), label.strip(), note.strip()
     src = os.path.join(STATIC, "audio", f)
     info = wav_info(src)
-    url = "%sstatic/audio/%s" % (ctx.root, f)
+    url = "%s%saudio/%s" % (ctx.root, ctx.ed.static, f)
     if info is None:
-        warn("%s: audio file missing: %s" % (ctx.doc.rel_out, f))
-        return ('<div class="audbox"><b>AUDIO: %s</b> &nbsp; <span class="m small">%s</span><br>'
-                '<span class="m small">RECORDING NOT ON THIS SERVER. REQUEST FROM CUSTODIAL RECORDS.</span></div>'
-                % (esc(label), esc(note)))
-    meta = " &middot; ".join(x for x in [esc(note), info["fmt"], info["dur"], info["size"]] if x)
-    return ('<div class="audbox"><b>AUDIO: %s</b> &nbsp; <span class="m small">%s</span><br>'
-            '<span class="aud" data-src="%s"><button type="button" class="ap">PLAY</button> '
-            '<button type="button" class="as">STOP</button> '
+        warn("%s: audio file missing: %s" % (ctx.doc.label, f))
+        return ('<div class="audbox"><b>%s: %s</b> &nbsp; <span class="m small">%s</span><br>'
+                '<span class="m small">%s</span></div>'
+                % (s["audio"], esc(label), esc(note), s["audio_missing"]))
+    meta = " &middot; ".join(x for x in [esc(note), wav_fmt(info, s), info["dur"], info["size"]] if x)
+    return ('<div class="audbox"><b>%s: %s</b> &nbsp; <span class="m small">%s</span><br>'
+            '<span class="aud" data-src="%s"><button type="button" class="ap">%s</button> '
+            '<button type="button" class="as">%s</button> '
             '<span class="at m">00:00 / %s</span></span> &nbsp; '
-            '<span class="small">[ <a href="%s">Download .WAV</a> ]</span></div>'
-            % (esc(label), meta, url, info["dur"].rjust(5, "0"), url))
+            '<span class="small">[ <a href="%s">%s</a> ]</span></div>'
+            % (s["audio"], esc(label), meta, url, s["play"], s["stop"],
+               info["dur"].rjust(5, "0"), url, s["download"]))
 
 
 def render_records(ctx):
+    s = ctx.ed.s
     out = []
     docs = [d for d in ctx.index.values() if d.kind != "page"]
-    for kind, heading in RECORD_KINDS:
+    for kind in RECORD_KINDS:
         group = sorted((d for d in docs if d.kind == kind),
                        key=lambda d: (d.meta.get("date", ""), d.id))
         if not group:
             continue
-        out.append("<h3>%s</h3>" % heading)
+        out.append("<h3>%s</h3>" % s["record_kinds"][kind])
         out.append('<div class="tbl"><table border="1" cellpadding="4" width="100%">')
-        out.append('<tr><th width="120">DOCUMENT</th><th width="96">DATE</th><th>SUBJECT</th></tr>')
+        out.append('<tr><th width="120">%s</th><th width="96">%s</th><th>%s</th></tr>' % s["records_head"])
         for d in group:
             out.append('<tr><td class="m"><a href="%s%s">%s</a></td><td class="m">%s</td><td>%s</td></tr>'
                        % (ctx.root, d.rel_out, esc(d.id), esc(d.meta.get("date", "--")),
@@ -395,13 +493,14 @@ def render_records(ctx):
 
 
 def render_audio_list(ctx):
+    s = ctx.ed.s
     out = ['<div class="tbl"><table border="1" cellpadding="4" width="100%">',
-           "<tr><th>RECORDING</th><th>FORMAT</th><th>LENGTH</th><th>FILED WITH</th></tr>"]
-    for d, f, label, note in AUDIO_REFS:
+           "<tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr>" % s["audio_list_head"]]
+    for d, f, label, note in ctx.ed.audio_refs:
         info = wav_info(os.path.join(STATIC, "audio", f))
         out.append('<tr><td class="m">%s</td><td class="m">%s</td><td class="m">%s</td>'
                    '<td><a href="%s%s">%s</a></td></tr>'
-                   % (esc(label), info["fmt"] if info else "--", info["dur"] if info else "--",
+                   % (esc(label), wav_fmt(info, s) if info else "--", info["dur"] if info else "--",
                       ctx.root, d.rel_out, esc(d.id)))
     out.append("</table></div>")
     return "\n".join(out)
@@ -415,7 +514,7 @@ def render_directive(s, ctx):
         return render_records(ctx)
     if name == "audio-list":
         return render_audio_list(ctx)
-    warn("%s: unknown directive ::: %s" % (ctx.doc.rel_out, name))
+    warn("%s: unknown directive ::: %s" % (ctx.doc.label, name))
     return ""
 
 
@@ -423,37 +522,41 @@ def render_directive(s, ctx):
 # Pages
 # --------------------------------------------------------------------------
 
-def crumb_html(doc, index):
+def crumb_html(doc):
     parent = doc.meta.get("parent")
     if not parent:
         return ""
-    p = index.get(parent)
+    p = doc.ed.index.get(parent)
     if p is None:
-        warn("%s: unknown parent %s" % (doc.rel_out, parent))
+        warn("%s: unknown parent %s" % (doc.label, parent))
         return ""
     label = p.meta.get("short", p.title)
     return '<div class="crumb"><a href="%s%s">%s</a> &gt; %s</div>' % (
         doc.root, p.rel_out, esc(label), esc(doc.id))
 
 
-def render_page(doc, index, templates):
-    ctx = Ctx(doc, index)
+def render_page(doc):
+    ed = doc.ed
+    ctx = Ctx(doc)
     body = render_body(doc.body, ctx)
-    tpl = templates.get(doc.layout)
+    tpl = ed.templates.get(doc.layout)
     if tpl is None:
-        warn("%s: unknown layout %s" % (doc.rel_out, doc.layout))
-        tpl = templates["default"]
+        warn("%s: unknown layout %s" % (doc.label, doc.layout))
+        tpl = ed.templates["default"]
     title_html = "" if doc.meta.get("notitle") == "yes" else "<h2>%s</h2>" % esc(doc.title)
     repl = {
         "{{root}}": doc.root,
+        "{{static}}": doc.root + ed.static,
+        "{{alt}}": ed.alt_href(doc),
+        "{{search_index}}": ed.search_index,
         "{{id}}": esc(doc.id),
         "{{title}}": esc(doc.title),
         "{{title_html}}": title_html,
-        "{{crumb}}": crumb_html(doc, index),
+        "{{crumb}}": crumb_html(doc),
         "{{content}}": body,
         "{{doc}}": esc(doc.meta.get("doc", "PIS-000")),
         "{{modified}}": esc(doc.meta.get("modified", "--")),
-        "{{classification}}": esc(doc.meta.get("classification", DEFAULT_CLASSIFICATION)),
+        "{{classification}}": esc(doc.meta.get("classification", ed.s["classification"])),
         "{{track}}": "no" if doc.meta.get("track") == "no" else "yes",
     }
     out = tpl
@@ -462,9 +565,9 @@ def render_page(doc, index, templates):
     return out
 
 
-def search_index(docs):
+def search_index(ed):
     items = []
-    for d in docs:
+    for d in ed.docs:
         if d.meta.get("search") == "no":
             continue
         items.append({
@@ -476,34 +579,34 @@ def search_index(docs):
 
 def main():
     strict = "--strict" in sys.argv
-    docs = load_docs()
-    index = {}
-    for d in docs:
-        if d.id in index:
-            warn("duplicate id %s (%s, %s)" % (d.id, index[d.id].rel_out, d.rel_out))
-        index[d.id] = d
-    templates = {}
-    for name in os.listdir(TEMPLATES):
-        if name.endswith(".html"):
-            templates[name[:-5]] = read(os.path.join(TEMPLATES, name))
-    collect_audio(docs)
+    for ed in EDITIONS:
+        load_edition(ed)
+        collect_audio(ed)
 
     if os.path.isdir(OUT):
         shutil.rmtree(OUT)
-    for d in docs:
-        path = os.path.join(OUT, d.rel_out)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(render_page(d, index, templates))
+    for ed in EDITIONS:
+        for d in ed.docs:
+            path = os.path.join(ed.out, d.rel_out)
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(render_page(d))
     shutil.copytree(STATIC, os.path.join(OUT, "static"))
-    with open(os.path.join(OUT, "static", "search-index.js"), "w", encoding="utf-8") as f:
-        f.write(search_index(docs))
+    for ed in EDITIONS:
+        with open(os.path.join(OUT, "static", ed.search_index), "w", encoding="utf-8") as f:
+            f.write(search_index(ed))
     with open(os.path.join(OUT, ".nojekyll"), "w") as f:
         f.write("")
 
     for w in warnings:
         print("WARNING: " + w)
-    print("Built %d documents into %s" % (len(docs), os.path.relpath(OUT, ROOT)))
+    for ed in EDITIONS:
+        missing = [d.label for d in ed.docs if d.rel_out not in ed.other.by_path]
+        if missing:
+            print("NOTE: not in the %s edition yet (linked to its index): %s"
+                  % (ed.other.lang, ", ".join(missing)))
+    print("Built %s into %s" % (", ".join("%d %s documents" % (len(ed.docs), ed.lang) for ed in EDITIONS),
+                                os.path.relpath(OUT, ROOT)))
     if strict and warnings:
         sys.exit(1)
 

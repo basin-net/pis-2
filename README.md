@@ -11,6 +11,7 @@ Everything here is invented. See `content/about.md`.
 ## 仕組み
 
 - 1文書＝1ファイル。`content/` 以下の Markdown を `build.py` が1990年代風の HTML に変換し、`_site/` に出力します。
+- 日本語版は `ja/content/` にあり、`_site/ja/` に出力されます。英語版と同じファイル名の文書同士が、各ページの「日本語」「English」のリンクで結ばれます。
 - 依存ライブラリはありません。Python 3.8 以上があれば動きます。
 - `main` ブランチに push すると、GitHub Actions がビルドして GitHub Pages に公開します（`.github/workflows/pages.yml`）。
 
@@ -21,7 +22,10 @@ content/            文書（Markdown）。この構成がそのまま URL に�
   docs/             事故報告・実験・分析・聴取記録など
   j4/               J-4 の残存文書
 templates/          ページの雛形（default / box / apache / plain）
-static/             CSS、JavaScript、音声（static/audio/*.wav）
+ja/content/         日本語版の文書。content/ と同じ構成・同じファイル名・同じ id
+ja/templates/       日本語版の雛形
+static/             CSS、JavaScript、音声（static/audio/*.wav）。両版で共有
+  ja.css            日本語版だけで読み込むフォント設定
 tools/make_audio.py 音声の生成・加工ツール（macOS の say を使用）
 tools/audio/*.json  音声の台本
 build.py            サイト生成
@@ -37,7 +41,7 @@ python3 build.py
 python3 -m http.server 8000 --directory _site
 ```
 
-ブラウザで http://localhost:8000 を開きます。最初に警告画面が出るので「I ACKNOWLEDGE」を押してください。
+ブラウザで http://localhost:8000 を開きます。最初に警告画面が出るので「I ACKNOWLEDGE」を押してください。日本語版は http://localhost:8000/ja/ です。
 
 リンク切れや ID の重複をエラーにして確認するには、次を実行します。
 

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja" data-root="{{root}}" data-id="{{id}}" data-track="{{track}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PIS-2: {{title}}</title>
+<!--
+  計画情報サーバー（PIS-2） - 本部別館2
+  BASIN-NET 閉域セグメント04。外部ゲートウェイなし。
+  保守担当：J-3 情報システム課（内線4471）
+  全ページに機密区分表示を付すこと。削除禁止。
+
+  （本作はフィクションです。登場する機関、計画、施設、人物はすべて架空です。）
+-->
+<script>try{if(sessionStorage.getItem('ona_ack')!=='1')document.documentElement.className='gate'}catch(e){document.documentElement.className='gate'}</script>
+<link rel="alternate" hreflang="en" href="{{alt}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=BIZ+UDMincho:wght@400;700&display=swap">
+<link rel="stylesheet" href="{{static}}style.css">
+<link rel="stylesheet" href="{{static}}ja.css">
+</head>
+<body>
+
+<div class="banner">{{classification}}</div>
+
+<!-- ======================================================= NOTICE (ENTRY) -->
+<div id="notice">
+<div class="box">
+<pre>BASIN-NET  //  閉域セグメント04
+ノード HQ-ANNEX-2    端末 T-0417    PIS-2 v3.1
+外部ゲートウェイなし。公衆回線への経路なし。</pre>
+<hr>
+<div id="notice-text">
+<p class="ctr"><b>*** 全利用者への通告 ***</b></p>
+<div class="pw">本システムは、特別アクセス計画 WICKER BASIN のもとで運用される、非標準資産局（ONA）の制限付き情報システムである。本システムの存在、および本システムが支援する計画の存在は、機密に指定されている。
+
+利用は、有効な WICKER 適格認定を受け、かつ知る必要性が認証された職員に限る。極秘取扱資格を有することのみをもって、利用が許可されるものではない。
+
+本システム上のすべての操作は記録される。記録対象には、検索内容、閲覧した文書、利用時間を含む。記録は計画保安官が精査する。無許可の利用、使用、または開示は、合衆国法典第18編および各自の秘密保持契約の定めにより処罰の対象となる。
+
+誤ってこの画面に到達した場合は、直ちに接続を切ること。24時間以内に担当保安官へ接触の事実を報告すること。ここで見た内容を、いかなる者とも話してはならない。
+
+「同意する」を選択した時点で、上記の条件に同意したものとみなす。</div>
+<hr>
+<p class="ctr"><button type="button" id="b-ack">同意する</button> &nbsp; <button type="button" id="b-disc">切断する</button></p>
+</div>
+</div>
+<p class="fiction">本作はフィクションです。登場する機関、計画、場所、人物はすべて架空です。 <a href="{{root}}about.html">このプロジェクトについて</a> &middot; <a href="{{alt}}" hreflang="en" lang="en">English</a></p>
+</div>
+
+<div id="wrap">
+
+<!-- ======================================================= HEADER -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td width="100" valign="middle">
+<svg width="88" height="88" viewBox="0 0 88 88" shape-rendering="crispEdges" aria-hidden="true">
+  <defs><path id="ring" d="M44,44 m-35,0 a35,35 0 1,1 70,0 a35,35 0 1,1 -70,0"/></defs>
+  <circle cx="44" cy="44" r="42" fill="#fff" stroke="#000" stroke-width="2"/>
+  <circle cx="44" cy="44" r="32" fill="none" stroke="#000" stroke-width="1"/>
+  <text font-family="Times New Roman, Times, serif" font-size="7" letter-spacing="0.5" fill="#000"><textPath href="#ring">OFFICE OF NONSTANDARD ASSETS &#183; WICKER BASIN &#183;</textPath></text>
+  <polygon fill="#000" points="44,28 47.3,37.5 57.3,37.7 49.3,43.7 52.2,53.3 44,47.6 35.8,53.3 38.7,43.7 30.7,37.7 40.7,37.5"/>
+  <text x="44" y="66" text-anchor="middle" font-family="Courier New, Courier, monospace" font-size="9" font-weight="bold" fill="#000">ONA</text>
+</svg>
+</td>
+<td valign="middle">
+<font size="5"><b>非標準資産局</b></font><br>
+特別アクセス計画 WICKER BASIN &mdash; 計画情報サーバー（PIS-2）<br>
+<span class="m small">BASIN-NET / 閉域セグメント04 / ノード HQ-ANNEX-2</span>
+</td>
+</tr>
+</table>
+<div class="sess">操作員 7741-K &nbsp;|&nbsp; 権限 WICKER-3 &nbsp;|&nbsp; 端末 T-0417 &nbsp;|&nbsp; システム時刻 <span class="systime">1997年10月14日 0000Z</span><br>前回ログオン 1997年10月13日 2251Z（T-0417） &nbsp;|&nbsp; 全操作は記録される &nbsp;|&nbsp; <a href="{{alt}}" hreflang="en" lang="en">English</a></div>
+<hr>
+<div class="nav">[ <a href="{{root}}index.html">目次</a> | <a href="{{root}}registry.html">資産登録簿</a> | <a href="{{root}}sites.html">サイト</a> | <a href="{{root}}research.html">研究</a> | <a href="{{root}}applied.html">WICKER-APPLIED</a> | <a href="{{root}}incidents.html">事案</a> | <a href="{{root}}directives.html">指令</a> | <a href="{{root}}records.html">記録</a> | <a href="{{root}}audio.html">音声</a> | <a href="{{root}}organization.html">組織</a> | <a href="{{root}}handbook.html">手引</a> | <a href="{{root}}directory.html">電話帳</a> | <a href="{{root}}search.html">検索</a> | <a href="{{root}}logoff.html">ログオフ</a> ]</div>
+<hr>
+
+<!-- ======================================================= PAGE -->
+{{crumb}}
+{{title_html}}
+{{content}}
+
+<!-- ======================================================= FOOTER -->
+<hr>
+<div class="small">[ <a href="{{root}}index.html">目次</a> | <a href="{{root}}registry.html">登録簿</a> | <a href="{{root}}records.html">記録</a> | <a href="{{root}}audio.html">音声</a> | <a href="{{root}}search.html">検索</a> | <a href="{{root}}logoff.html">ログオフ</a> | <a href="{{alt}}" hreflang="en" lang="en">English</a> ]</div>
+<p class="m small">指定者：ONA 局長<br>
+指定根拠：WICKER BASIN 機密指定指針 4-91<br>
+解除条件：X1、X3、X6<br>
+文書番号：{{doc}} &nbsp; 最終更新：{{modified}}</p>
+<p class="small">ページ管理者：J-3 情報システム課（内線4471）。本サーバーは 極秘 // WICKER BASIN までの情報処理について認定を受けている（DAA 承認 96-117）。印刷物は B-114号室の保管記録課で登録すること。漏洩の疑いがある場合は計画保安官（内線4499）に報告すること。<br>
+<i>Netscape Navigator 3.0、800×600 での閲覧を推奨。</i></p>
+</div>
+
+<div class="banner">{{classification}}</div>
+
+<script src="{{static}}{{search_index}}"></script>
+<script src="{{static}}site.js"></script>
+</body>
+</html>

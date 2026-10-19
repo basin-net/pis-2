@@ -1,0 +1,13 @@
+/* PIS-2 // WICKER BASIN -- Japanese edition. Loaded after style.css.
+   BIZ UD fonts give MS Mincho / MS Gothic era metrics: ASCII is exactly half the width of kana,
+   so fixed-width documents (charts, logs, schedules) still line up. Count a kana as two columns. */
+
+body { font: 16px/1.55 "Times New Roman", Times, "BIZ UDMincho", "MS PMincho", "Hiragino Mincho ProN", serif; }
+.banner { font-family: Arial, Helvetica, "BIZ UDGothic", "MS PGothic", sans-serif; }
+.m { font-family: "BIZ UDGothic", "MS Gothic", "Osaka-Mono", monospace; }
+.doc { font: 13px/1.55 "BIZ UDGothic", "MS Gothic", "Osaka-Mono", monospace; }
+.sess { font: 12px/1.5 "BIZ UDGothic", "MS Gothic", "Osaka-Mono", monospace; }
+button, input[type=submit] { font: 14px "BIZ UDGothic", "MS PGothic", sans-serif; }
+input[type=text] { font: 14px "BIZ UDGothic", "MS Gothic", monospace; }
+.box pre, .box .pw { font: 13px/1.6 "BIZ UDGothic", "MS Gothic", "Osaka-Mono", monospace; }
+.fiction { font-family: Arial, Helvetica, "BIZ UDGothic", sans-serif; }
